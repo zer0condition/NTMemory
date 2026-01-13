@@ -28,11 +28,9 @@ Query kernel addresses, translate virtual to physical addresses, inspect the PFN
 ### Kernel Drivers
 - Loaded kernel driver enumeration
 - Driver load order, base addresses, sizes, and paths
-- ntoskrnl.exe highlighting
 
 ### Ntoskrnl Exports
 - **Kernel export resolution** - Full ntoskrnl.exe export table with calculated kernel addresses from usermode
-- Forwarder detection
 
 ### Physical Memory
 - **Virtual to physical address translation** - Translate any kernel VA to PA from usermode via Superfetch
@@ -46,7 +44,6 @@ Query kernel addresses, translate virtual to physical addresses, inspect the PFN
 - Kernel pool allocation tracking by tag
 - Paged and non-paged pool usage breakdown
 - Allocation counts per tag
-- Auto-refresh every 5 seconds
 
 ### Handles
 - System-wide handle count
@@ -57,7 +54,6 @@ Query kernel addresses, translate virtual to physical addresses, inspect the PFN
 ### Performance
 - I/O operation metrics (read, write, other)
 - Per-processor statistics (kernel time, user time, DPC time, interrupts)
-- Multi-CPU support
 
 ### Prefetch
 - Application launch history from prefetch files
