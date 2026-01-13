@@ -35,7 +35,7 @@ Query kernel addresses, translate virtual to physical addresses, inspect the PFN
 - Forwarder detection
 
 ### Physical Memory
-- **Virtual to physical address translation** - Translate any VA to PA from usermode via Superfetch
+- **Virtual to physical address translation** - Translate any kernel VA to PA from usermode via Superfetch
 - **PFN database queries** - Query Page Frame Number database for page state and usage
 - Physical memory range mapping
 
