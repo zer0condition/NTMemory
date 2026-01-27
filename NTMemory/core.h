@@ -16,13 +16,6 @@
 #pragma comment(lib, "ntdll.lib")
 #pragma comment(lib, "psapi.lib")
 
-// NT functions not in winternl.h
-NTSTATUS NTAPI NtOpenSection(
-    PHANDLE SectionHandle,
-    ACCESS_MASK DesiredAccess,
-    POBJECT_ATTRIBUTES ObjectAttributes
-);
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -390,54 +383,6 @@ extern "C" {
         ULONG_PTR Reserved;
         SYS_HANDLE_ENTRY_EX Handles[1];
     } SYS_HANDLE_INFO_EX, * PSYS_HANDLE_INFO_EX;
-
-#define OBJECT_HEADER_TO_BODY_OFFSET 0x30
-
-    typedef struct _OBJECT_HEADER {
-        LONGLONG PointerCount;
-        union {
-            LONGLONG HandleCount;
-            PVOID NextToFree;
-        };
-        PVOID Lock;
-        UCHAR TypeIndex;
-        union {
-            UCHAR TraceFlags;
-            struct {
-                UCHAR DbgRefTrace : 1;
-                UCHAR DbgTracePermanent : 1;
-            };
-        };
-        UCHAR InfoMask;
-        union {
-            UCHAR Flags;
-            struct {
-                UCHAR NewObject : 1;
-                UCHAR KernelObject : 1;
-                UCHAR KernelOnlyAccess : 1;
-                UCHAR ExclusiveObject : 1;
-                UCHAR PermanentObject : 1;
-                UCHAR DefaultSecurityQuota : 1;
-                UCHAR SingleHandleEntry : 1;
-                UCHAR DeletedInline : 1;
-            };
-        };
-        ULONG Reserved;
-        union {
-            PVOID ObjectCreateInfo;
-            PVOID QuotaBlockCharged;
-        };
-        PVOID SecurityDescriptor;
-    } OBJECT_HEADER, * POBJECT_HEADER;
-
-    typedef struct _PHYSICALMEMORY_OBJECT_INFO {
-        uint64_t ObjectBodyAddress;
-        uint64_t ObjectHeaderAddress;
-        uint64_t HandleValue;
-        uint32_t HandleCount;
-        bool KernelOnlyAccess;
-        bool Found;
-    } PHYSICALMEMORY_OBJECT_INFO, * PPHYSICALMEMORY_OBJECT_INFO;
 
     //
     // Pool Tag Information (Custom)
@@ -1024,9 +969,6 @@ extern "C" {
     bool Core_RefreshKernelDrivers(KERNEL_DRIVER_LIST* list);
     bool Core_GetKernelImageInfo(uint64_t* imageBase, uint32_t* imageSize, char* name, size_t nameSize);
     PVOID Core_GetSystemInformation(SYSTEM_INFORMATION_CLASS infoClass);
-
-    // PhysicalMemory Object Functions (for DKOM)
-    bool Core_FindPhysicalMemoryObject(PHYSICALMEMORY_OBJECT_INFO* info);
     
     // Ntoskrnl Export Functions
     bool Core_RefreshKernelExports(KERNEL_EXPORT_LIST* list, KERNEL_DRIVER_LIST* drivers, uint32_t driverIndex);

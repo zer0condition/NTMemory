@@ -19,8 +19,6 @@ static IDXGISwapChain*          g_pSwapChain = nullptr;
 static ID3D11RenderTargetView*  g_mainRenderTargetView = nullptr;
 
 static APP_STATE g_State = {};
-static PHYSICALMEMORY_OBJECT_INFO g_PhysMemInfo = {};
-static bool g_PhysMemQueried = false;
 static bool g_Running = true;
 static HWND g_hWnd = nullptr;
 
@@ -596,19 +594,6 @@ static void DrawSystemSummaryInner() {
             ImGui::Text("PsLoadedModuleList: "); ImGui::SameLine(0, 0);
             CopyableCellColored(ImVec4(1.0f, 0.7f, 0.5f, 1.0f), buf);
         }
-        
-        // PhysicalMemory Object Header - always query and show result
-        if (!g_PhysMemQueried) {
-            g_PhysMemQueried = true;
-            Core_FindPhysicalMemoryObject(&g_PhysMemInfo);
-        }
-        if (g_PhysMemInfo.Found) {
-            snprintf(buf, sizeof(buf), "0x%016llX", g_PhysMemInfo.ObjectHeaderAddress);
-            ImGui::Text("\\Device\\PhysicalMemory: "); ImGui::SameLine(0, 0);
-            CopyableCellColored(ImVec4(1.0f, 0.4f, 0.4f, 1.0f), buf);
-        } else {
-            ImGui::TextColored(ImVec4(0.6f, 0.6f, 0.6f, 1.0f), "\\Device\\PhysicalMemory: Not found");
-        }
     } else {
         ImGui::TextColored(ImVec4(0.6f, 0.6f, 0.6f, 1.0f), "Loading...");
     }
@@ -690,18 +675,6 @@ static void DrawSystemSummary() {
             ImGui::Text("PsActiveProcessHead: ");
             ImGui::SameLine(0, 0);
             CopyableCellColored(ImVec4(1.0f, 0.5f, 0.7f, 1.0f), buf);
-        }
-        
-        // PhysicalMemory Object Header
-        if (!g_PhysMemQueried) {
-            g_PhysMemQueried = true;
-            Core_FindPhysicalMemoryObject(&g_PhysMemInfo);
-        }
-        if (g_PhysMemInfo.Found) {
-            snprintf(buf, sizeof(buf), "0x%016llX", g_PhysMemInfo.ObjectHeaderAddress);
-            ImGui::Text("PhysMem ObjHeader: ");
-            ImGui::SameLine(0, 0);
-            CopyableCellColored(ImVec4(1.0f, 0.4f, 0.4f, 1.0f), buf);
         }
     } else {
         ImGui::TextColored(ImVec4(0.6f, 0.6f, 0.6f, 1.0f), "Load exports to find pointers");
